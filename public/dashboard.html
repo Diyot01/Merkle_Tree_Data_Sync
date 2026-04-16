@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Dashboard</title>
+
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial;
+            background: #0f172a;
+            color: white;
+        }
+
+        .navbar {
+            background: #1e293b;
+            padding: 15px;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: auto;
+        }
+
+        .card {
+            background: #1e293b;
+            padding: 15px;
+            margin-bottom: 15px;
+            border-radius: 10px;
+        }
+
+        button {
+            padding: 10px;
+            margin: 5px;
+            border: none;
+            border-radius: 5px;
+            background: #38bdf8;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background: #0ea5e9;
+        }
+
+        pre {
+            background: #020617;
+            padding: 10px;
+            border-radius: 5px;
+        }
+
+        .logout {
+            background: #ef4444;
+        }
+
+        .logout:hover {
+            background: #dc2626;
+        }
+        .card:hover {
+            transform: scale(1.02);
+            transition: 0.2s;
+        }
+
+    </style>
+</head>
+
+<body>
+<div id="status" style="margin-bottom:10px; color:#38bdf8;"></div>
+<div class="navbar">
+    <h3>🚀 Data Sync Dashboard</h3>
+    <button class="logout" onclick="logout()">Logout</button>
+</div>
+
+<div class="container">
+
+    <div class="card">
+        <h3>👤 Profile</h3>
+        <button onclick="getProfile()">Load Profile</button>
+    </div>
+
+    <div class="card">
+        <h3>🔄 Sync Data</h3>
+        <button onclick="sync()">Run Sync</button>
+    </div>
+
+    <div class="card">
+        <h3>📄 Output</h3>
+        <pre id="output"></pre>
+    </div>
+
+</div>
+
+<script>
+const userId = localStorage.getItem("userId");
+
+if (!userId) {
+    window.location.href = "login.html";
+}
+
+async function getProfile() {
+    const res = await fetch(`/api/profile/${userId}`);
+    const data = await res.json();
+
+    output.innerHTML = `
+        <b>User ID:</b> ${data.userId} <br>
+        <b>Name:</b> ${data.name} <br>
+        <b>Email:</b> ${data.email}
+    `;
+}
+
+async function sync() {
+    const res = await fetch("/api/syncdata");
+    const data = await res.json();
+
+    let html = `<b>${data.message}</b><br><br>`;
+
+    if (data.changedData) {
+        data.changedData.forEach(change => {
+            html += `
+                <div style="margin-bottom:10px;">
+                    <b>${change.action}</b><br>
+                    ${JSON.stringify(change)}
+                </div>
+            `;
+        });
+    }
+
+    output.innerHTML = html;
+}
+
+function logout() {
+    localStorage.removeItem("userId");
+    window.location.href = "login.html";
+}
+</script>
+
+</body>
+</html>
