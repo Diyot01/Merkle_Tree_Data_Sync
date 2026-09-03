@@ -11,7 +11,6 @@ app.use(express.json());
 app.use('/api', userRoutes);    
 
 app.get('/', (req, res) => {
-    res.send("Hello");
+    res.sendFile(path.join(__dirname, 'public', 'login.html'));
 });
-
 module.exports = app;
