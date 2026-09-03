@@ -1,4 +1,4 @@
-const hashData = require('../../hash');
+const hashData = require('./hash');
 
 function buildMerkleTreeWithLevels(hashes) {
     let levels = [];
