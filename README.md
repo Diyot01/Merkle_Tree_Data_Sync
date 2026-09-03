@@ -69,6 +69,15 @@ Required data is synchronized
 
 └── README.md
 
+## 🔗 Live Demo
+[https://merkle-tree-data-sync.onrender.com]
+
+**Demo login:**
+- Email: `admin@demo.com`
+- Password: `admin123`
+
+> Note: This is hosted on Render's free tier — the server may take 30–60 seconds to wake up on first load if it's been idle.
+
 
 👥 Team Members
 
